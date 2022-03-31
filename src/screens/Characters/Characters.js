@@ -61,7 +61,7 @@ function Characters() {
         <List>
           {filteredCharacters.length
             ? filteredCharacters.map(({ id, name, image, status }) => (
-                <>
+                <Grid key={id}>
                   <ListItem>
                     <ListItemAvatar>
                       <Avatar src={image} />
@@ -70,7 +70,7 @@ function Characters() {
                     <Link to={`/character/${id}`}>See More</Link>
                   </ListItem>
                   <Divider variant="inset" component="li" />
-                </>
+                </Grid>
               ))
             : null}
         </List>
