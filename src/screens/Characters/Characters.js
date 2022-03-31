@@ -1,21 +1,44 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { Grid, Typography } from "@mui/material";
+import { useState, useEffect, useCallback } from "react";
+import {
+  Grid,
+  Typography,
+  TextField,
+  Avatar,
+  List,
+  ListItem,
+  Divider,
+  ListItemAvatar,
+  ListItemText,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 //TODO: Generar IU De LISTADO
-//TODO: Input de busqueda
-//TODO: Eliminar cosas del state
-//TODO: Update
 
 function Characters() {
   const [characters, setCharacters] = useState([]);
+  const [filteredCharacters, setFilteredCharacters] = useState([]);
+
+  const filterInputHandler = useCallback(
+    ({ target: { value } }) => {
+      if (!value) {
+        setFilteredCharacters(characters);
+      } else {
+        const nextFiltered = characters.filter(({ name }) => {
+          return name.toLowerCase().includes(value.toLowerCase());
+        });
+        setFilteredCharacters(nextFiltered);
+      }
+    },
+    [characters]
+  );
 
   const getCharactersApi = async () => {
     await axios
       .get("https://rickandmortyapi.com/api/character")
-      .then(({ data: { results } }) => {
-        setCharacters(results);
+      .then(({ data }) => {
+        setCharacters(data.results);
+        setFilteredCharacters(data.results);
       })
       .catch((error) => console.log(error));
   };
@@ -25,15 +48,32 @@ function Characters() {
   }, []);
 
   return (
-    <Grid>
-      <Typography variant="h3">Character List</Typography>
+    <Grid container item md={8}>
+      <Typography style={{ marginBottom: 24 }} variant="h3">
+        Character List
+      </Typography>
+      <TextField
+        style={{ marginBottom: 24 }}
+        fullWidth
+        onChange={filterInputHandler}
+      />
       <Grid container direction="column">
-        {characters.length &&
-          characters.map(({ id, name }) => (
-            <Link key={id} to={`/character/${id}`}>
-              {name}
-            </Link>
-          ))}
+        <List>
+          {filteredCharacters.length
+            ? filteredCharacters.map(({ id, name, image, status }) => (
+                <>
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Avatar src={image} />
+                    </ListItemAvatar>
+                    <ListItemText primary={name} secondary={status} />
+                    <Link to={`/character/${id}`}>See More</Link>
+                  </ListItem>
+                  <Divider variant="inset" component="li" />
+                </>
+              ))
+            : null}
+        </List>
       </Grid>
     </Grid>
   );
