@@ -48,19 +48,19 @@ function Character() {
             {character.name}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`Created: ${character.created}`}
+            <strong>{`Created: `}</strong> {character.created}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`Gender: ${character.gender}`}
+            <strong>{`Gender: `}</strong> {character.gender}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`Specie: ${character.species}`}
+            <strong>{`Specie: `}</strong> {character.species}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`Status: ${character.status}`}
+            <strong>{`Status: `}</strong> {character.status}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {`Location: ${character.location.name}`}
+            <strong>{`Location: `}</strong> {character.location.name}
           </Typography>
         </CardContent>
       </Card>
